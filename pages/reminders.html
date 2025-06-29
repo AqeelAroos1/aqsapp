@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reminders 💬</title>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff0f6;
+      color: #333;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* NAVIGATION BAR */
+    nav {
+      background-color: #d63384;
+      padding: 1rem 1.5rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    nav a {
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: background 0.2s;
+      user-select: none;
+    }
+
+    nav a:hover {
+      background-color: #b1236a;
+    }
+
+    /* Hamburger button - hidden on desktop */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .hamburger div {
+      width: 100%;
+      height: 3px;
+      background-color: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* When active, animate hamburger into an X */
+    .hamburger.active div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active div:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active div:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* NAVIGATION DRAWER FOR MOBILE */
+    @media (max-width: 700px) {
+      nav {
+        padding: 1rem;
+      }
+      nav .nav-links {
+        position: fixed;
+        top: 56px; /* navbar height */
+        right: 0;
+        background-color: #d63384;
+        height: calc(100vh - 56px);
+        width: 240px;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 2rem 1.5rem;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        box-shadow: -4px 0 10px rgba(0,0,0,0.2);
+        z-index: 15;
+      }
+
+      nav .nav-links.open {
+        transform: translateX(0);
+      }
+
+      nav a {
+        font-size: 1.2rem;
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* Container */
+    .container {
+      max-width: 700px;
+      margin: 2rem auto 4rem;
+      background: #fff;
+      padding: 2rem 3rem;
+      border-radius: 16px;
+      box-shadow: 0 12px 25px rgba(214, 51, 132, 0.15);
+      position: relative;
+      border: 2px solid #d63384;
+      background-image:
+        linear-gradient(to bottom, transparent 95%, #f5d4de 95%);
+      background-size: 100% 40px;
+    }
+
+    h1 {
+      color: #d63384;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      letter-spacing: 1px;
+      font-size: 2rem;
+      user-select: none;
+    }
+
+    /* Notebook style list */
+    ul.list {
+      list-style: none;
+      padding-left: 1.2rem;
+      border-left: 3px solid #d63384;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: #4a4a4a;
+    }
+
+    ul.list li {
+      position: relative;
+      padding-left: 1.2rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      user-select: text;
+    }
+
+    /* small bullet as a subtle dot */
+    ul.list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7em;
+      width: 8px;
+      height: 8px;
+      background: #d63384;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* Back link */
+    a.back {
+      display: inline-block;
+      margin-top: 2rem;
+      color: #d63384;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+      border: 2px solid #d63384;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+    }
+    a.back:hover {
+      background-color: #d63384;
+      color: #fff;
+    }
+
+    /* Floating hearts container */
+    .hearts-container {
+      position: fixed;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: visible;
+      z-index: 5;
+    }
+
+    /* Heart style */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 18px;
+      background-color: #d63384;
+      transform: rotate(-45deg);
+      animation: floatUp linear forwards;
+      opacity: 0.8;
+      filter: drop-shadow(0 0 2px #b1236a);
+    }
+
+    /* Create heart shape using :before and :after */
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 18px;
+      background-color: #d63384;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
+
+    /* Heart floating animation */
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(-45deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-150px) rotate(-45deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 1rem;
+        padding: 1.5rem 2rem;
+      }
+
+      h1 {
+        font-size: 1.7rem;
+      }
+
+      ul.list {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <nav>
+    <div class="logo">Us 💞</div>
+    <div class="nav-links">
+      <a href="../pages/reminders.html">Reminders</a>
+      <a href="../pages/calendar.html">Click Me Oi</a>
+
+    </div>
+    <div class="hamburger" aria-label="Toggle navigation" role="button" tabindex="0" aria-expanded="false">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>What You Do For Meeee</h1>
+    <ul class="list">
+      <li>You chose to love me</li>
+      <li>You make me laugh PODDDAAAKKK</li>
+      <li>You're always there for me</li>
+      <li>You call me beautiful even when I don't feel like it sometimes.</li>
+      <li>You ALWAYS make me smile as much as you piss me off.</li>
+      <li>You always make time for me even if you're very busy. And that isn't something easy.</li>
+      <li>You, baby, you make me a better person; you make me want to become a better person for us.</li>
+      <li>You've never forgotten to remind me to take my meds. That day during the nikkah thingy or whatever the first thing was, you were busy arranging and helping move stuff but you still came online to remind me. I might've cried poddak.</li>
+      <li>You piss me off and yeah, I think I like it or whatever.</li>
+      <li>You hype me up even for the dumbest stuff.</li>
+      <li>You're always honest with me.</li>
+      <li>You are yourself with me.</li>
+      <li>You're always there for me.</li>
+      <li>You make me feel comfortable.</li>
+      <li>Baby I just need you to be you and that's MORE than enough. I will love you the same and more every day fool. I love you Ahmad Aqeel.</li>
+    </ul>
+    <a href="../index.html" class="back">← Back to Home</a>
+  </div>
+
+  <div class="hearts-container" aria-hidden="true"></div>
+
+  <audio id="bgMusic" src="../music/count-on-me.mp3" preload="auto"></audio>
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    function toggleMenu() {
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !expanded);
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+    hamburger.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+
+    // Hearts floating effect
+    const heartsContainer = document.querySelector('.hearts-container');
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+
+      // Random horizontal start position (5% to 95% viewport width)
+      heart.style.left = (Math.random() * 90 + 5) + 'vw';
+
+      // Random size between 12px and 24px
+      const size = Math.random() * 12 + 12;
+      heart.style.width = size + 'px';
+      heart.style.height = (size * 0.9) + 'px';
+
+      // Random animation duration between 4s and 8s
+      const duration = Math.random() * 4 + 4;
+      heart.style.animationDuration = duration + 's';
+
+      // Random delay so hearts appear continuously
+      heart.style.animationDelay = (Math.random() * 5) + 's';
+
+      heartsContainer.appendChild(heart);
+
+      // Remove heart after animation
+      setTimeout(() => {
+        heartsContainer.removeChild(heart);
+      }, duration * 1000 + 500);
+    }
+
+    // Create a heart every 700ms
+    setInterval(createHeart, 700);
+
+    // Play music on first user interaction (click anywhere)
+    document.body.addEventListener('click', () => {
+      const music = document.getElementById("bgMusic");
+      music.play().catch(e => {
+        console.log('Playback prevented:', e);
+      });
+    }, { once: true });
+  </script>
+
+</body>
+</html>

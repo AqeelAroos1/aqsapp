@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome Home 💞</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff0f6;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* NAVIGATION BAR */
+    nav {
+      background-color: #d63384;
+      padding: 1rem 1.5rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 20;
+    }
+
+    nav .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    nav a {
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: background 0.2s;
+      user-select: none;
+    }
+
+    nav a:hover {
+      background-color: #b1236a;
+    }
+
+    /* Hamburger button - hidden on desktop */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .hamburger div {
+      width: 100%;
+      height: 3px;
+      background-color: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* When active, animate hamburger into an X */
+    .hamburger.active div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active div:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active div:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* NAVIGATION DRAWER FOR MOBILE */
+    @media (max-width: 700px) {
+      nav {
+        padding: 1rem;
+      }
+      nav .nav-links {
+        position: fixed;
+        top: 56px; /* navbar height */
+        right: 0;
+        background-color: #d63384;
+        height: calc(100vh - 56px);
+        width: 240px;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 2rem 1.5rem;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        box-shadow: -4px 0 10px rgba(0,0,0,0.2);
+        z-index: 25;
+      }
+
+      nav .nav-links.open {
+        transform: translateX(0);
+      }
+
+      nav a {
+        font-size: 1.2rem;
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* BANNER */
+    .banner {
+      position: relative;
+      width: 100%;
+      height: 450px;
+      background-image: 
+        linear-gradient(to bottom, rgba(126, 126, 126, 0.6), rgba(38, 38, 38, 0.9)),
+        url('images/aq3.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #lyricsOverlay {
+      position: absolute;
+      bottom: 120px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+      padding: 0 1rem;
+      animation: fadein 0.5s ease;
+      user-select: none;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      text-align: center;
+      padding: 2rem 1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .main-content h1 {
+      font-size: 2.5rem;
+      color: #d63384;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+
+    .main-content p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+      user-select: text;
+    }
+
+    /* CONTENT SECTION */
+    .content-section {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      max-width: 900px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+      flex-wrap: nowrap;
+    }
+
+    .image-container {
+      flex: 1 1 300px;
+      max-width: 300px;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 8px 15px rgba(214, 51, 132, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+    .image-container img {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .image-container:hover {
+      box-shadow: 0 12px 25px rgba(214, 51, 132, 0.6);
+      transform: scale(1.05);
+    }
+
+    .image-container:hover img {
+      transform: scale(1.1);
+    }
+
+    .text-container {
+      flex: 2 1 400px;
+      font-size: 1.1rem;
+      color: #4a4a4a;
+      line-height: 1.5;
+      user-select: text;
+    }
+
+    @media (max-width: 700px) {
+      .content-section {
+        flex-direction: column;
+        max-width: 100%;
+      }
+      .image-container, .text-container {
+        max-width: 100%;
+        flex: none;
+      }
+      .image-container {
+        margin-bottom: 1rem;
+      }
+      .main-content h1 {
+        font-size: 2rem;
+      }
+      .main-content p {
+        font-size: 1rem;
+        max-width: 100%;
+        padding: 0 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV BAR -->
+  <nav>
+    <div class="logo">Us 💞</div>
+    <div class="nav-links">
+      <a href="pages/reminders.html">Reminders</a>
+      <a href="pages/calendar.html">Click Me Oi</a>
+
+    </div>
+    <div class="hamburger" aria-label="Toggle navigation" role="button" tabindex="0" aria-expanded="false">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </nav>
+
+  <div class="banner">
+    <div id="lyricsOverlay">🎶</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <h1>Just to make my sweet boy smile :)</h1>
+    <p>This is your little space of joy that I made with my whole heart for you 💗</p>
+  </div>
+
+  <audio id="bgMusic" src="music/count-on-me.mp3" preload="auto"></audio>
+
+  <div class="content-section">
+    <div class="image-container" tabindex="0" aria-label="Memory photo">
+      <img src="images/aq4.jpeg" alt="Memory Photo" />
+    </div>
+    <div class="text-container">
+      <p>
+        I still remember just how nervous I was on 30th of May, exactly a month ago when we were going to meet for the first timeeee. 
+        I WAS NERVOUS AN ENTIRE WEEK PRIOR. I only realised that I was very nervous because I really really love you fool, and I wanted it to go well. 
+        I remember complaining to Wish and Ishra saying "istg today after he sees me he'll hate me and will probably end things with me." 
+        Little did I know we'll be falling much harder for each other after. Baby you were literally the best thing I've ever had in my life. 
+        I want you to know that I'll be here through all the good and bad. I love you for you baby, not for what you'll give me and for what you want to give me. 
+        I told you baby, YOU are enough and I love you so much Aqeel &lt;3
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    function toggleMenu() {
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !expanded);
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+    // Allow toggling menu with keyboard (Enter/Space)
+    hamburger.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+
+    // Play music on first user click anywhere
+    const music = document.getElementById('bgMusic');
+    document.body.addEventListener('click', () => {
+      music.play().catch(() => {/* ignore */});
+    }, { once: true });
+
+    // Lyrics overlay update
+    const lyrics = [
+      { time: 1, text: "If you ever find yourself stuck in the middle of the sea" },
+      { time: 7, text: "I'll sail the world to find you" },
+      { time: 13, text: "If you ever find yourself lost in the dark and you can't see" },
+      { time: 19, text: "I'll be the light to guide you" },
+      { time: 25, text: "Find out what we're made of" },
+      { time: 30, text: "When we are called to help our friends in need" },
+      { time: 36, text: "You can count on me like one two three" },
+      { time: 42, text: "I'll be there" },
+      { time: 47, text: "And I know when I need it" },
+      { time: 51, text: "I can count on you like four three two" },
+      { time: 57, text: "And you'll be there" },
+      { time: 61, text: "Cause that's what friends are supposed to do, oh yeah" }
+    ];
+
+    const overlay = document.getElementById('lyricsOverlay');
+    music.addEventListener('timeupdate', () => {
+      const currentTime = music.currentTime;
+      for (let i = lyrics.length - 1; i >= 0; i--) {
+        if (currentTime >= lyrics[i].time) {
+          overlay.textContent = lyrics[i].text;
+          break;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

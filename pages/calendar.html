@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Click Me If You Love Me</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      margin: 0;
+      background: #fff0f6;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      position: relative;
+      user-select: none;
+      padding: 0;
+    }
+
+    /* NAVIGATION BAR */
+    nav {
+      background-color: #d63384;
+      padding: 0.8rem 1.5rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    nav .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    nav .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.2rem;
+      font-size: 1rem;
+      transition: color 0.2s ease;
+    }
+
+    nav .nav-links a:hover {
+      color: #ffe6f0;
+    }
+
+    /* MAIN BUTTON */
+    #clickBtn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 1rem 2rem;
+      font-size: 1.25rem;
+      background-color: #d63384;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(214, 51, 132, 0.6);
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    #clickBtn:hover {
+      background-color: #b02a6f;
+    }
+
+    /* FINAL MESSAGE */
+    #finalMessage {
+      max-width: 420px;
+      text-align: center;
+      color: #b02a6f;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      font-weight: 500;
+      padding: 1.2rem;
+      border-radius: 16px;
+      background: #ffe6f0;
+      box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #finalMessage img {
+      max-width: 100%;
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav .nav-links a {
+        margin-left: 0.6rem;
+        font-size: 0.9rem;
+      }
+
+      #clickBtn {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+      }
+    }
+    #finalMessage {
+  max-width: 90vw;
+  width: auto;
+  padding: 1.2rem 1.5rem;
+  text-align: center;
+  color: #b02a6f;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  font-weight: 500;
+  border-radius: 16px;
+  background: #ffe6f0;
+  box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  #finalMessage {
+    font-size: 1rem;
+    padding: 1rem 1.2rem;
+    max-width: 95vw;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <nav>
+    <div class="logo">Us 💞</div>
+    <div class="nav-links">
+      <a href="../pages/reminders.html">Reminders</a>
+      <a href="../pages/calendar.html">Click Me Oi</a>
+      
+    </div>
+  </nav>
+
+  <!-- BUTTON -->
+  <button id="clickBtn">Click me if you love me 💖</button>
+
+  <!-- FINAL MESSAGE -->
+  <div id="finalMessage">
+    <p><strong>Stupid Baby,</strong></p>
+    <p>
+      Every time you bring yourself down baby,<br />
+      Every time you think you’re not enough,<br />
+      Every time you are hard on yourself,<br />
+      Remember it’s the baby you who was born after saying yes to Allah 77 times<br />
+      is who you’re being mean to.<br /><br />
+
+      Be easier on yourself. I know it isn’t easy but you baby,<br />
+      you are one amazing person who does so much even though you say you don’t.<br /><br />
+
+      I don’t love you for the things you do,<br />
+      I love you for the person you are and for the person you wanna be,<br />
+      and for how you make me feel like. I love you. Idiot.
+    </p>
+  </div>
+
+<script>
+  const btn = document.getElementById('clickBtn');
+  const finalMsg = document.getElementById('finalMessage');
+
+  const messages = [
+    "Click me if you love me",
+    "Click me if you think I'm pretty",
+    "Click me or I'll cry",
+    "Click me if you want me to be your wife 💍",
+    "Click me because you're amazing",
+    "Click me if you miss me :(",
+    "Click me to make me smile",
+    "Click me if you believe in us ❤️",
+    "One last click pleaseeee"
+  ];
+
+  let clickCount = 0;
+
+  function moveButtonRandomly() {
+    const btnWidth = btn.offsetWidth;
+    const btnHeight = btn.offsetHeight;
+    const maxX = window.innerWidth - btnWidth - 20;
+    const maxY = window.innerHeight - btnHeight - 20;
+
+    const randomX = Math.floor(Math.random() * maxX) + 10;
+    const randomY = Math.floor(Math.random() * maxY) + 10;
+
+    btn.style.left = randomX + 'px';
+    btn.style.top = randomY + 'px';
+    btn.style.transform = 'translate(0, 0)';
+  }
+
+  btn.addEventListener('click', () => {
+    clickCount++;
+
+    if (clickCount < messages.length) {
+      btn.textContent = messages[clickCount];
+      moveButtonRandomly();
+    } else {
+      btn.style.display = 'none';
+      finalMsg.style.display = 'block';
+    }
+  });
+
+  window.onresize = () => {
+    if (btn.style.display !== 'none') {
+      moveButtonRandomly();
+    }
+  };
+</script>
+
+</body>
+</html>
