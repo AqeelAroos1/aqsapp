@@ -14,10 +14,9 @@
       margin: 0;
       background: #fff0f6;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
-      position: relative;
       user-select: none;
       padding: 0;
+      overflow-y: auto; /* allow vertical scroll */
     }
 
     /* NAVIGATION BAR */
@@ -29,6 +28,9 @@
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     nav .logo {
@@ -64,6 +66,7 @@
       box-shadow: 0 4px 12px rgba(214, 51, 132, 0.6);
       transition: background-color 0.3s ease;
       user-select: none;
+      z-index: 10;
     }
 
     #clickBtn:hover {
@@ -72,29 +75,38 @@
 
     /* FINAL MESSAGE */
     #finalMessage {
-      max-width: 420px;
-      text-align: center;
-      color: #b02a6f;
-      font-size: 1.1rem;
-      line-height: 1.5;
-      font-weight: 500;
-      padding: 1.2rem;
-      border-radius: 16px;
-      background: #ffe6f0;
-      box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
-      display: none;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      max-width: 90vw;
+      max-height: 80vh;
+      width: auto;
+      background: #ffe6f0;
+      color: #b02a6f;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      font-weight: 500;
+      padding: 1.5rem 1.8rem 3.5rem 1.8rem; /* extra bottom padding for space */
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
+      text-align: center;
+      overflow-y: auto; /* scroll inside if too tall */
+      display: none;
+      box-sizing: border-box;
+      z-index: 10000;
     }
 
-    #finalMessage img {
-      max-width: 100%;
-      border-radius: 16px;
+    #finalMessage::-webkit-scrollbar {
+      width: 6px;
+    }
+    #finalMessage::-webkit-scrollbar-thumb {
+      background: #d63384aa;
+      border-radius: 3px;
+    }
+
+    #finalMessage p {
       margin-bottom: 1rem;
-      user-select: none;
-      pointer-events: none;
     }
 
     /* Responsive */
@@ -108,46 +120,24 @@
         font-size: 1rem;
         padding: 0.8rem 1.5rem;
       }
+
+      #finalMessage {
+        max-width: 95vw;
+        max-height: 75vh;
+        font-size: 1rem;
+        padding: 1.2rem 1.5rem 3rem 1.5rem;
+      }
     }
-    #finalMessage {
-  max-width: 90vw;
-  width: auto;
-  padding: 1.2rem 1.5rem;
-  text-align: center;
-  color: #b02a6f;
-  font-size: 1.1rem;
-  line-height: 1.5;
-  font-weight: 500;
-  border-radius: 16px;
-  background: #ffe6f0;
-  box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-sizing: border-box;
-}
-
-@media (max-width: 600px) {
-  #finalMessage {
-    font-size: 1rem;
-    padding: 1rem 1.2rem;
-    max-width: 95vw;
-  }
-}
-
   </style>
 </head>
 <body>
 
   <!-- NAVIGATION BAR -->
   <nav>
-    <div class="logo">Us 💞</div>
+    <div class="logo">Mmwwaaahh</div>
     <div class="nav-links">
       <a href="../pages/reminders.html">Reminders</a>
       <a href="../pages/calendar.html">Click Me Oi</a>
-      
     </div>
   </nav>
 
@@ -155,8 +145,8 @@
   <button id="clickBtn">Click me if you love me 💖</button>
 
   <!-- FINAL MESSAGE -->
-  <div id="finalMessage">
-    <p><strong>Stupid Baby,</strong></p>
+  <div id="finalMessage" role="dialog" aria-modal="true" aria-labelledby="finalMessageTitle" tabindex="-1">
+    <p id="finalMessageTitle"><strong>Stupid Baby,</strong></p>
     <p>
       Every time you bring yourself down baby,<br />
       Every time you think you’re not enough,<br />
@@ -214,14 +204,15 @@
     } else {
       btn.style.display = 'none';
       finalMsg.style.display = 'block';
+      finalMsg.focus();
     }
   });
 
-  window.onresize = () => {
+  window.addEventListener('resize', () => {
     if (btn.style.display !== 'none') {
       moveButtonRandomly();
     }
-  };
+  });
 </script>
 
 </body>
